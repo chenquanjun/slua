@@ -3,7 +3,8 @@ on:
     push:
         paths:
             - 'build/**'
-
+            - '.github/workflows/**'
+          
 jobs:
     build_win:
         runs-on: windows-latest
