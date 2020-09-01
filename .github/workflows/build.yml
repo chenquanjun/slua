@@ -19,7 +19,7 @@ jobs:
             - name: commit build
               if: ${{ success() }}
               run: |
-                git commit ../Assets/Plugins/x64/slua.dll ../Assets/Plugins/x86/slua.dll -m "[Auto build]windows dll"
+                git commit Assets/Plugins/x64/slua.dll Assets/Plugins/x86/slua.dll -m "[Auto build]windows dll"
             - name: push build
               if: ${{ success() }}
               uses: ad-m/github-push-action@master
