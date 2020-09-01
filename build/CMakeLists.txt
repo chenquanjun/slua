@@ -5,11 +5,11 @@ set(CMAKE_BUILD_TYPE Release)
 project(slua)
 
 set(EXT_SRC_ROOT ./)
-set(LUA_INC_PATH ${EXT_SRC_ROOT}/lua-5.1.5/src)
-set(LUA_SRC_PATH ${EXT_SRC_ROOT}/lua-5.1.5/src)
+set(LUA_INC_PATH ${EXT_SRC_ROOT}/lua-5.3.4/src)
+set(LUA_SRC_PATH ${EXT_SRC_ROOT}/lua-5.3.4/src)
 set(SLUA_SRC_PATH ${EXT_SRC_ROOT}/slua.c)
 
-set(LUA_SRC_FILES 
+set(LUA_SRC_FILES
     ${LUA_SRC_PATH}/lapi.c
     ${LUA_SRC_PATH}/lauxlib.c
     ${LUA_SRC_PATH}/lbaselib.c
@@ -39,6 +39,10 @@ set(LUA_SRC_FILES
     ${LUA_SRC_PATH}/lundump.c
     ${LUA_SRC_PATH}/lvm.c
     ${LUA_SRC_PATH}/lzio.c
+    ${LUA_SRC_PATH}/lbitlib.c
+    ${LUA_SRC_PATH}/lcorolib.c
+    ${LUA_SRC_PATH}/lutf8lib.c
+    ${LUA_SRC_PATH}/lctype.c
     ${SLUA_SRC_PATH}
 )
 
@@ -112,7 +116,7 @@ endif()
 if(APPLE)
 
 if(IOS) # on iOS
-add_library(slua 
+add_library(slua
     ${LUA_SRC_FILES}
     ${THIRDPART_SRC_FILES}
 )
