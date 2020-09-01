@@ -10,9 +10,13 @@ jobs:
         runs-on: windows-latest
 
         steps:
-        - uses: actions/checkout@v2
-
-        - name: run build command
-          run: |
-              cd build
-              .\make_win.bat
+            - name: checkout
+            - uses: actions/checkout@v2
+            - name: Add msbuild to PATH
+              uses: microsoft/setup-msbuild@v1.0.1
+              with:
+                  vs-version: '15'
+            - name: run build command
+              run: |   
+                  cd build
+                  .\make_win.bat
