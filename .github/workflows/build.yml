@@ -1,0 +1,17 @@
+name: build
+on:
+    push:
+        paths:
+            - 'build/**'
+
+jobs:
+    build_win:
+        runs-on: windows-latest
+
+        steps:
+        - uses: actions/checkout@v2
+
+        - name: run build command
+          run: |
+              cd build
+              .\make_win.bat
