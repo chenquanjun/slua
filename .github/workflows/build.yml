@@ -6,31 +6,6 @@ on:
             - '.github/workflows/**'
           
 jobs:
-    build_win:
-        runs-on: windows-2016
-
-        steps:
-            - name: checkout
-              uses: actions/checkout@v2
-              
-            - name: run build command
-              run: |   
-                  cd build
-                  .\make_win.bat
-                  
-            - name: commit build
-              if: ${{ success() }}
-              run: |
-                git config --local user.email "action@github.com"
-                git config --local user.name "GitHub Action"
-                git commit Assets/Plugins/x64/slua.dll Assets/Plugins/x86/slua.dll -m "[Auto build]windows dll"
-                
-            - name: push build
-              if: ${{ success() }}
-              uses: ad-m/github-push-action@master
-              with:
-                 github_token: ${{ secrets.GITHUB_TOKEN }}
-
     build_android:
         runs-on: ubuntu-18.04
         
@@ -57,6 +32,7 @@ jobs:
             - name: run build command
               env:
                   NDKPATH: /usr/local/lib/android/sdk/ndk
+                  ANDROID_NDK: /usr/local/lib/android/sdk/ndk
               run: |
                   cd build
                   ./make_android.sh
