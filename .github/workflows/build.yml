@@ -18,9 +18,6 @@ jobs:
                 sudo mkdir -p /usr/local/lib/android/sdk/ndk
                 sudo chmod -R 777 /usr/local/lib/android/sdk/ndk
                 sudo chown -R $USER:$USER /usr/local/lib/android/sdk/ndk
-                ls /usr/local/lib/android/sdk/ndk
-                ls /usr/local/lib/android/sdk/ndk-bundle
-                ls /usr/local/lib/android/sdk
                   
             - name: NDK Cache
               id: ndk-cache
@@ -34,13 +31,10 @@ jobs:
               
             - name: run build command
               env:
-                  NDKPATH: /usr/local/lib/android/sdk/ndk
-                  ANDROID_NDK: /usr/local/lib/android/sdk/ndk
+                  NDKPATH: /usr/local/lib/android/sdk/ndk/21.0.6113669
+                  ANDROID_NDK: /usr/local/lib/android/sdk/ndk/21.0.6113669
               run: |
                   cd build
-                  ls /usr/local/lib/android/sdk/ndk
-                  ls /usr/local/lib/android/sdk/ndk-bundle
-                  ls /usr/local/lib/android/sdk
                   ./make_android.sh
                   
             - name: commit build
