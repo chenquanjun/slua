@@ -39,6 +39,8 @@ jobs:
               uses: actions/checkout@v2
               
             - name: run build command
+              env:
+                  NDKPATH: /usr/local/lib/android/sdk/ndk 
               run: |
                   cd build
                   ./make_android.sh
