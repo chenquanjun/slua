@@ -38,9 +38,25 @@ jobs:
             - name: checkout
               uses: actions/checkout@v2
               
+            - name: Prepare NDK dir for caching
+              run: |
+                sudo mkdir -p /usr/local/lib/android/sdk/ndk
+                sudo chmod -R 777 /usr/local/lib/android/sdk/ndk
+                sudo chown -R $USER:$USER /usr/local/lib/android/sdk/ndk
+                  
+            - name: NDK Cache
+              id: ndk-cache
+              uses: actions/cache@v2
+              with:
+                  path: /usr/local/lib/android/sdk/ndk
+                  key: ndk-cache-21.0.6113669-v2
+            - name: Install NDK
+              if: steps.ndk-cache.outputs.cache-hit != 'true'
+              run: echo "y" | sudo /usr/local/lib/android/sdk/tools/bin/sdkmanager --install "ndk;21.0.6113669"
+              
             - name: run build command
               env:
-                  NDKPATH: /usr/local/lib/android/sdk/ndk-bundle 
+                  NDKPATH: /usr/local/lib/android/sdk/ndk
               run: |
                   cd build
                   ./make_android.sh
