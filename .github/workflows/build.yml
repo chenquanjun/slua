@@ -12,18 +12,46 @@ jobs:
         steps:
             - name: checkout
               uses: actions/checkout@v2
+              
             - name: run build command
               run: |   
                   cd build
                   .\make_win.bat
+                  
             - name: commit build
               if: ${{ success() }}
               run: |
                 git config --local user.email "action@github.com"
                 git config --local user.name "GitHub Action"
                 git commit Assets/Plugins/x64/slua.dll Assets/Plugins/x86/slua.dll -m "[Auto build]windows dll"
+                
             - name: push build
               if: ${{ success() }}
               uses: ad-m/github-push-action@master
               with:
                  github_token: ${{ secrets.GITHUB_TOKEN }}
+
+    build_android:
+        runs-on: ubuntu-18.04
+        
+        steps:
+            - name: checkout
+              uses: actions/checkout@v2
+              
+            - name: run build command
+              run: |
+                  cd build
+                  ./make_android.sh
+                  
+            - name: commit build
+              if: ${{ success() }}
+              run: |
+                git config --local user.email "action@github.com"
+                git config --local user.name "GitHub Action"
+                git commit Assets/Plugins/Android/libs/armeabi-v7a/libslua.so Assets/Plugins/Android/libs/armeabi-arm64/libslua.so Assets/Plugins/Android/libs/x86/libslua.so -m "[Auto build]android so"
+                
+            - name: push build
+              if: ${{ success() }}
+              uses: ad-m/github-push-action@master
+              with:
+                 github_token: ${{ secrets.GITHUB_TOKEN }} 
