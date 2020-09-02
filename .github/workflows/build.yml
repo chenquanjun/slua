@@ -40,7 +40,7 @@ jobs:
               
             - name: run build command
               env:
-                  NDKPATH: /usr/local/lib/android/sdk/ndk 
+                  NDKPATH: /usr/local/lib/android/sdk/ndk-bundle 
               run: |
                   cd build
                   ./make_android.sh
