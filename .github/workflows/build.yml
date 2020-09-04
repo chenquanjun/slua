@@ -24,15 +24,19 @@ jobs:
               uses: actions/cache@v2
               with:
                   path: /usr/local/lib/android/sdk/ndk
-                  key: ndk-cache-21.0.6113669-v2
+                  key: ndk-cache-r15c-linux
+
             - name: Install NDK
               if: steps.ndk-cache.outputs.cache-hit != 'true'
-              run: echo "y" | sudo /usr/local/lib/android/sdk/tools/bin/sdkmanager --install "ndk;21.0.6113669"
+              run: |
+                  cd /usr/local/lib/android/sdk/ndk
+                  curl -O https://dl.google.com/android/repository/android-ndk-r15c-linux-x86_64.zip
+                  unzip android-ndk-r15c-linux-x86_64.zip
               
             - name: run build command
               env:
-                  NDKPATH: /usr/local/lib/android/sdk/ndk/21.0.6113669
-                  ANDROID_NDK: /usr/local/lib/android/sdk/ndk/21.0.6113669
+                  NDKPATH: /usr/local/lib/android/sdk/ndk/android-ndk-r15c
+                  ANDROID_NDK: /usr/local/lib/android/sdk/android-ndk-r15c
               run: |
                   cd build
                   ./make_android.sh
