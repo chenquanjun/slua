@@ -18,6 +18,7 @@ jobs:
                 sudo mkdir -p /usr/local/lib/android/sdk/ndk
                 sudo chmod -R 777 /usr/local/lib/android/sdk/ndk
                 sudo chown -R $USER:$USER /usr/local/lib/android/sdk/ndk
+                sudo apt-get install make -y
                   
             - name: NDK Cache
               id: ndk-cache
