@@ -36,7 +36,7 @@ jobs:
             - name: run build command
               env:
                   NDKPATH: /usr/local/lib/android/sdk/ndk/android-ndk-r15c
-                  ANDROID_NDK: /usr/local/lib/android/sdk/android-ndk-r15c
+                  ANDROID_NDK: /usr/local/lib/android/sdk/ndk/android-ndk-r15c
               run: |
                   cd build
                   ./make_android.sh
