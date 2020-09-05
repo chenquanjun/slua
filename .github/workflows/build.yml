@@ -41,7 +41,7 @@ jobs:
 
             - name: run build command
               env:
-                  CMAKE_PATH: ~/custom_cmake/cmake
+                  CMAKE_PATH: ~/custom_cmake/bin/cmake
                   NDKPATH: /usr/local/lib/android/sdk/ndk/android-ndk-r13b
                   ANDROID_NDK: /usr/local/lib/android/sdk/ndk/android-ndk-r13b
               run: |
