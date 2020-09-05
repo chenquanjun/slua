@@ -11,6 +11,9 @@
 #include <limits.h>
 #include <stddef.h>
 
+#if defined(__ANDROID__)
+#define lua_getlocaledecpoint()    ('.')
+#endif
 
 /*
 ** ===================================================================
