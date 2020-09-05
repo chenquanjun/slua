@@ -48,17 +48,9 @@ jobs:
                   cd build
                   ./make_android.sh
 
-            - name: commit build
+            - name: post build
               if: ${{ success() }}
-              run: |
-                pwd
-                git status
-                git config --local user.email "action@github.com"
-                git config --local user.name "GitHub Action"
-                git commit Assets/Plugins/Android/libs/armeabi-v7a/libslua.so Assets/Plugins/Android/libs/armeabi-arm64/libslua.so Assets/Plugins/Android/libs/x86/libslua.so -m "[Auto build]android so"
-
-            - name: push build
-              if: ${{ success() }}
-              uses: ad-m/github-push-action@master
+              uses: stefanzweifel/git-auto-commit-action@v4
               with:
-                 github_token: ${{ secrets.GITHUB_TOKEN }}
+                 commit_message: "[Auto build]android so"
+                 file_pattern: Assets/Plugins/Android/libs/*.so
