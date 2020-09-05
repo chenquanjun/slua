@@ -6,6 +6,25 @@ on:
             - '.github/workflows/**'
 
 jobs:
+    build_win:
+        runs-on: windows-2016
+
+        steps:
+            - name: checkout
+              uses: actions/checkout@v2
+              
+            - name: run build command
+              run: |   
+                  cd build
+                  .\make_win.bat
+               
+            - name: post build
+              if: ${{ success() }}
+              uses: stefanzweifel/git-auto-commit-action@v4
+              with:
+                 commit_message: "[Auto build]windows dll"
+                 file_pattern: Assets/Plugins/x86/*.dll Assets/Plugins/x64/*.dll
+
     build_android:
         runs-on: ubuntu-16.04
 
