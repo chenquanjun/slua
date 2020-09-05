@@ -35,13 +35,13 @@ jobs:
 
             - name: cmake
               run: |
-                  cd ~
-                  wget https://cmake.org/files/v3.5/cmake-3.5.1-Linux-x86_64.tar.gz
+                  cd /usr/local/lib/android/sdk/ndk
+                  curl -O https://cmake.org/files/v3.5/cmake-3.5.1-Linux-x86_64.tar.gz
                   mkdir ./custom_cmake && tar -xzvf cmake-3.5.1-Linux-x86_64.tar.gz -C ./custom_cmake --strip-components 1
 
             - name: run build command
               env:
-                  CMAKE_PATH: ~/custom_cmake/bin/cmake
+                  CMAKE_PATH: /usr/local/lib/android/sdk/ndk/custom_cmake/bin/cmake
                   NDKPATH: /usr/local/lib/android/sdk/ndk/android-ndk-r13b
                   ANDROID_NDK: /usr/local/lib/android/sdk/ndk/android-ndk-r13b
               run: |
