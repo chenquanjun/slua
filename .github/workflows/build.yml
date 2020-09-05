@@ -4,32 +4,21 @@ on:
         paths:
             - 'build/**'
             - '.github/workflows/**'
-          
+
 jobs:
     build_android:
         runs-on: ubuntu-16.04
-        
+
         steps:
             - name: checkout
               uses: actions/checkout@v2
-              
-            - name: cmake
-              run: |
-                  cd ~
-                  wget http://www.cmake.org/files/v3.5/cmake-3.5.1.tar.gz
-                  tar zxvf cmake-3.5.1.tar.gz
-                  cd cmake-3.5.1
-                  ./configure
-                  make
-                  sudo make install
-                  cmake --version
-              
+
             - name: Prepare NDK dir for caching
               run: |
                 sudo mkdir -p /usr/local/lib/android/sdk/ndk
                 sudo chmod -R 777 /usr/local/lib/android/sdk/ndk
                 sudo chown -R $USER:$USER /usr/local/lib/android/sdk/ndk
-                  
+
             - name: NDK Cache
               id: ndk-cache
               uses: actions/cache@v2
@@ -43,24 +32,31 @@ jobs:
                   cd /usr/local/lib/android/sdk/ndk
                   curl -O https://dl.google.com/android/repository/android-ndk-r13b-linux-x86_64.zip
                   unzip android-ndk-r13b-linux-x86_64.zip
-              
+
+            - name: cmake
+              run: |
+                  cd ~
+                  wget https://cmake.org/files/v3.5/cmake-3.5.1-Linux-x86_64.tar.gz
+                  mkdir ./custom_cmake && tar -xzvf cmake-3.5.1-Linux-x86_64.tar.gz -C ./custom_cmake --strip-components 1
+
             - name: run build command
               env:
+                  CMAKE_PATH: ~/custom_cmake/cmake
                   NDKPATH: /usr/local/lib/android/sdk/ndk/android-ndk-r13b
                   ANDROID_NDK: /usr/local/lib/android/sdk/ndk/android-ndk-r13b
               run: |
                   cd build
                   ./make_android.sh
-                  
+
             - name: commit build
               if: ${{ success() }}
               run: |
                 git config --local user.email "action@github.com"
                 git config --local user.name "GitHub Action"
                 git commit Assets/Plugins/Android/libs/armeabi-v7a/libslua.so Assets/Plugins/Android/libs/armeabi-arm64/libslua.so Assets/Plugins/Android/libs/x86/libslua.so -m "[Auto build]android so"
-                
+
             - name: push build
               if: ${{ success() }}
               uses: ad-m/github-push-action@master
               with:
-                 github_token: ${{ secrets.GITHUB_TOKEN }} 
+                 github_token: ${{ secrets.GITHUB_TOKEN }}
