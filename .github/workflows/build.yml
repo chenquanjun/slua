@@ -13,6 +13,17 @@ jobs:
             - name: checkout
               uses: actions/checkout@v2
               
+            - name: cmake
+              run: |
+                  cd ~
+                  wget http://www.cmake.org/files/v3.5/cmake-3.5.1.tar.gz
+                  tar zxvf cmake-3.11.3.tar.gz
+                  cd cmake-3.11.3
+                  ./configure
+                  make
+                  sudo make install
+                  cmake --version
+              
             - name: Prepare NDK dir for caching
               run: |
                 sudo mkdir -p /usr/local/lib/android/sdk/ndk
