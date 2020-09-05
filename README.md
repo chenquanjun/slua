@@ -1,3 +1,14 @@
+## [Attention]This fork is based on lua 5.3
+modify:
+- Add github action auto build libraries(Windows/Android/iOS)
+- Add build/lua-5.3.4 library
+- Modify lua-5.3.4 source files for Android/iOS
+- Modify build/cmake files for Android/iOS
+
+Remember add define LUA_5_3 to Scripting Define Symbols(ProjectSettings-Player)
+
+------------------------------
+
 # slua
 Fastest lua binding via static code generating for Unity3D or mono
 
