@@ -5,11 +5,7 @@ if [ -z "$NDKPATH" ]; then
     exit 1
 fi
 
-CMAKE=cmake
-if [ -z "$CMAKE_PATH" ]; then
-	CMAKE=$CMAKE_PATH
-fi
-
+CMAKE=$CMAKE_PATH
 NDK=$NDKPATH
 
 function make_for() {
