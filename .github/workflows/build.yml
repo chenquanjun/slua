@@ -25,3 +25,73 @@ jobs:
               with:
                  commit_message: "[Auto build]ios library"
                  file_pattern: Assets/Plugins/iOS/*.a
+
+    build_win:
+        runs-on: windows-2016
+        needs: build_ios
+        steps:
+            - name: checkout
+              uses: actions/checkout@v2
+              
+            - name: run build command
+              run: |   
+                  cd build
+                  .\make_win.bat
+                  git pull
+               
+            - name: post build
+              if: ${{ success() }}
+              uses: stefanzweifel/git-auto-commit-action@v4
+              with:
+                 commit_message: "[Auto build]windows dll"
+                 file_pattern: Assets/Plugins/x86/*.dll Assets/Plugins/x64/*.dll
+
+    build_android:
+        runs-on: ubuntu-16.04
+        needs: build_win
+        steps:
+            - name: checkout
+              uses: actions/checkout@v2
+
+            - name: Prepare NDK dir for caching
+              run: |
+                sudo mkdir -p /usr/local/lib/android/sdk/ndk
+                sudo chmod -R 777 /usr/local/lib/android/sdk/ndk
+                sudo chown -R $USER:$USER /usr/local/lib/android/sdk/ndk
+
+            - name: NDK Cache
+              id: ndk-cache
+              uses: actions/cache@v2
+              with:
+                  path: /usr/local/lib/android/sdk/ndk
+                  key: ndk-cache-r15c-linux
+
+            - name: Install NDK
+              if: steps.ndk-cache.outputs.cache-hit != 'true'
+              run: |
+                  cd /usr/local/lib/android/sdk/ndk
+                  curl -O https://dl.google.com/android/repository/android-ndk-r13b-linux-x86_64.zip
+                  unzip android-ndk-r13b-linux-x86_64.zip
+
+            - name: cmake
+              run: |
+                  cd /usr/share
+                  curl -O https://cmake.org/files/v3.5/cmake-3.5.1-Linux-x86_64.tar.gz
+                  mkdir ./custom_cmake && tar -xzvf cmake-3.5.1-Linux-x86_64.tar.gz -C ./custom_cmake --strip-components 1
+
+            - name: run build command
+              env:
+                  CMAKE_PATH: /usr/share/custom_cmake/bin/cmake
+                  NDKPATH: /usr/local/lib/android/sdk/ndk/android-ndk-r13b
+                  ANDROID_NDK: /usr/local/lib/android/sdk/ndk/android-ndk-r13b
+              run: |
+                  cd build
+                  ./make_android.sh
+                  git pull
+
+            - name: post build
+              if: ${{ success() }}
+              uses: stefanzweifel/git-auto-commit-action@v4
+              with:
+                 commit_message: "[Auto build]android so"
+                 file_pattern: Assets/Plugins/Android/libs/*.so
